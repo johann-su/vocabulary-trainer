@@ -16,47 +16,75 @@ const { loadLang } = require('./scrap');
     let word;
     let translation;
     let languages;
+    let available;
 
-    await inquirer.prompt([
-        {
-            name: 'new',
-            type: 'confirm',
-            message: 'Do you want to load a new language?',
-            default: false
-        }
-    ])
-        .then((async answer => {
-            if (answer.new) {
-                await inquirer.prompt([
-                    {
-                        name: 'lang',
-                        type: 'input',
-                        message: 'Which language do you want to add?'
-                    }
-                ])
-                    .then((async answer => {
-                        await loadLang(answer.lang)
-                            .then(async () => {
-                                console.log(`${answer.lang} was added to your languages 🥳`)
-                                await listDir(path.join(__dirname, `../languages/`))
-                                    .then((data) => {
-                                        languages = data
-                                    })
-                                    .catch(e => console.log(e))
+    await listDir(path.join(__dirname, `../languages/`))
+        .then((data) => {
+            available = data.length
+        })
+        .catch(e => console.log(e))
+
+    if (available == 0) {
+        await inquirer.prompt([
+            {
+                name: 'lang',
+                type: 'input',
+                message: 'Which language do you want to add?'
+            }
+        ])
+            .then((async answer => {
+                await loadLang(answer.lang)
+                    .then(async () => {
+                        console.log(`${answer.lang} was added to your languages 🥳`)
+                        await listDir(path.join(__dirname, `../languages/`))
+                            .then((data) => {
+                                languages = data
                             })
                             .catch(e => console.log(e))
-                    }))
-                    .catch(e => console.log(e))
-            } else {
-                await listDir(path.join(__dirname, `../languages/`))
-                    .then((data) => {
-                        languages = data
                     })
                     .catch(e => console.log(e))
+            }))
+            .catch(e => console.log(e))
+    } else {
+        await inquirer.prompt([
+            {
+                name: 'new',
+                type: 'confirm',
+                message: 'Do you want to load a new language?',
+                default: false
             }
-        }))
-
-    console.log(languages)
+        ])
+            .then((async answer => {
+                if (answer.new) {
+                    await inquirer.prompt([
+                        {
+                            name: 'lang',
+                            type: 'input',
+                            message: 'Which language do you want to add?'
+                        }
+                    ])
+                        .then((async answer => {
+                            await loadLang(answer.lang)
+                                .then(async () => {
+                                    console.log(`${answer.lang} was added to your languages 🥳`)
+                                    await listDir(path.join(__dirname, `../languages/`))
+                                        .then((data) => {
+                                            languages = data
+                                        })
+                                        .catch(e => console.log(e))
+                                })
+                                .catch(e => console.log(e))
+                        }))
+                        .catch(e => console.log(e))
+                } else {
+                    await listDir(path.join(__dirname, `../languages/`))
+                        .then((data) => {
+                            languages = data
+                        })
+                        .catch(e => console.log(e))
+                }
+            }))
+    }
 
     await inquirer.prompt([
         {
