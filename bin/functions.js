@@ -7,7 +7,7 @@ function readCsv(path) {
         let word_list = []
         try {
             fs.createReadStream(path)
-                .pipe(csv({ separator: ';' }))
+                .pipe(csv({ separator: ',' }))
                 .on('data', async(row) => {
                     await word_list.push(row)
                 })

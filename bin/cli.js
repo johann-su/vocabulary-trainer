@@ -153,7 +153,7 @@ const { loadLang } = require('./scrap');
                 await inquirer.prompt([{
                         name: word,
                         type: 'input',
-                        message: `What does ${word} mean in ${Object.keys(data[i])[1]}`
+                        message: `What does "${word}" mean in ${Object.keys(data[i])[1]}`
                     }])
                     .then(answer => {
                         if (answer[word] == translation) {
@@ -178,11 +178,10 @@ const { loadLang } = require('./scrap');
                     .catch(e => console.log(e))
 
             } else if (answers.practice == 'New words') {
-                console.log('new words')
                 await inquirer.prompt([{
                         name: word,
                         type: 'confirm',
-                        message: `${word} means ${translation} in ${Object.keys(data[i])[0]}`
+                        message: `"${word}" means "${translation}" in ${Object.keys(data[i])[0]}`
                     }])
                     .catch(e => console.log(e))
             } else {
@@ -207,7 +206,7 @@ const { loadLang } = require('./scrap');
                 await inquirer.prompt([{
                         name: word,
                         type: 'input',
-                        message: `What does ${word} mean in ${Object.keys(data[i])[1]}`
+                        message: `What does "${word}" mean in ${Object.keys(data[i])[1]}`
                     }])
                     .then(answer => {
                         if (answer[word] == data[i][translation]) {
@@ -234,7 +233,7 @@ const { loadLang } = require('./scrap');
                 await inquirer.prompt([{
                         name: word,
                         type: 'confirm',
-                        message: `${word} means ${translation} in ${Object.keys(data[i])[0]}`
+                        message: `"${word}" means "${translation}" in ${Object.keys(data[i])[0]}`
                     }])
                     .catch(e => console.log(e))
             } else {
@@ -259,7 +258,7 @@ const { loadLang } = require('./scrap');
                 await inquirer.prompt([{
                         name: word,
                         type: 'input',
-                        message: `What does ${translation} mean in ${Object.keys(data[i])[0]}`
+                        message: `What does "${translation}" mean in ${Object.keys(data[i])[0]}`
                     }])
                     .then(answer => {
                         if (answer[word] == data[i][word]) {
@@ -286,7 +285,7 @@ const { loadLang } = require('./scrap');
                 await inquirer.prompt([{
                         name: word,
                         type: 'confirm',
-                        message: `${translation} means ${word} in ${Object.keys(data[i])[0]}`
+                        message: `"${translation}" means "${word}" in ${Object.keys(data[i])[0]}`
                     }])
                     .catch(e => console.log(e))
             } else {
