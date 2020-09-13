@@ -7,6 +7,7 @@ const inquirer = require('inquirer');
 const textToSpeech = require('@google-cloud/text-to-speech');
 const player = require('play-sound')(opts = {})
 const { readCsv, listDir, getLangCode, isInJson } = require('./functions');
+const { loadLang } = require('./scrap');
 
 (async () => {
     let languages = listDir(path.join(__dirname, `../languages/`))
@@ -15,6 +16,32 @@ const { readCsv, listDir, getLangCode, isInJson } = require('./functions');
     let data;
     let word;
     let translation;
+
+    await inquirer.prompt([
+        {
+            name: 'new',
+            type: 'confirm',
+            message: 'Do you want to load a new language?',
+            default: false
+        }
+    ])
+        .then((async answer => {
+            if (answer.new) {
+                await inquirer.prompt([
+                    {
+                        name: 'lang',
+                        type: 'input',
+                        message: 'Which language do you want to add?'
+                    }
+                ])
+                    .then((async answer => {
+                        await loadLang(answer.lang)
+                            .then(() => console.log(`${answer.lang} was added to your languages 🥳`))
+                            .catch(e => console.log(e))
+                    }))
+                    .catch(e => console.log(e))
+            }
+        }))
 
     await inquirer.prompt([
         {
@@ -34,7 +61,7 @@ const { readCsv, listDir, getLangCode, isInJson } = require('./functions');
             type: 'list',
             message: 'Select if you want to learn new words or practice',
             choices: ['New words', 'Practice', 'Known words']
-        },
+        }
     ])
         .then(a => {
             answers = a
