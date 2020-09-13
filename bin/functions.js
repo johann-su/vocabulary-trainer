@@ -8,7 +8,7 @@ function readCsv(path) {
         try {
             fs.createReadStream(path)
                 .pipe(csv({ separator: ';' }))
-                .on('data', async (row) => {
+                .on('data', async(row) => {
                     await word_list.push(row)
                 })
                 .on('end', () => {
