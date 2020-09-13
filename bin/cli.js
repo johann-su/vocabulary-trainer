@@ -134,8 +134,16 @@ const { loadLang } = require('./scrap');
 
                 const [response] = await client.synthesizeSpeech(request);
                 // Write the binary audio content to a local file
+                dir = './audio'
+                if (!fs.existsSync(dir)) {
+                    fs.mkdirSync(dir, {
+                        recursive: true
+                    });
+                }
                 const writeFile = util.promisify(fs.writeFile);
-                await writeFile(path.join(__dirname, `../audio/${word}.mp3`), response.audioContent, 'binary');
+                await writeFile(path.join(__dirname, `../audio/${word}.mp3`), response.audioContent, 'binary').catch((err) => {
+                    console.log("folder 'audio' not created")
+                });
                 player.play(path.join(__dirname, `../audio/${word}.mp3`), function(err) {
                     if (err) throw err
                 })
