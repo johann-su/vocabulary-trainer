@@ -15,4 +15,4 @@ A cli to practice vocabulary of a language
 
 1. activate text to speech api in google cloud dashboard and create a service account
 2. add service account key to PATH `export GOOGLE_APPLICATION_CREDENTIALS="[PATH]"`
-3. run `npm link`
+3. cd into this project and run `npm link`
