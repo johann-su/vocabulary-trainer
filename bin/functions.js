@@ -22,19 +22,22 @@ function readCsv(path) {
 }
 
 function listDir(path) {
-    let languages = [];
-    try {
-        const files = fs.readdirSync(path);
+    return new Promise((resolve, reject) => {
 
-        files.forEach(file => {
-            languages.push(file.replace('.csv', ''))
-        });
-
-    } catch (err) {
-        console.log(err);
-    }
-
-    return languages
+        let languages = [];
+        try {
+            const files = fs.readdirSync(path);
+    
+            files.forEach(file => {
+                languages.push(file.replace('.csv', ''))
+            });
+    
+        } catch (err) {
+            reject(err)
+        }
+    
+        resolve(languages)
+    })
 }
 
 function getLangCode(language) {

@@ -15,6 +15,7 @@ const { loadLang } = require('./scrap');
     let data;
     let word;
     let translation;
+    let languages;
 
     await inquirer.prompt([
         {
@@ -34,15 +35,28 @@ const { loadLang } = require('./scrap');
                     }
                 ])
                     .then((async answer => {
-                        loadLang(answer.lang)
-                            .then(async () => console.log(`${answer.lang} was added to your languages 🥳`))
+                        await loadLang(answer.lang)
+                            .then(async () => {
+                                console.log(`${answer.lang} was added to your languages 🥳`)
+                                await listDir(path.join(__dirname, `../languages/`))
+                                    .then((data) => {
+                                        languages = data
+                                    })
+                                    .catch(e => console.log(e))
+                            })
                             .catch(e => console.log(e))
                     }))
+                    .catch(e => console.log(e))
+            } else {
+                await listDir(path.join(__dirname, `../languages/`))
+                    .then((data) => {
+                        languages = data
+                    })
                     .catch(e => console.log(e))
             }
         }))
 
-    let languages = listDir(path.join(__dirname, `../languages/`))
+    console.log(languages)
 
     await inquirer.prompt([
         {
