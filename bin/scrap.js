@@ -46,8 +46,6 @@ function loadLang(language) {
                 }
             })
 
-            console.log(records)
-
             csvWriter.writeRecords(records)
                 .then(() => {
                     resolve()
