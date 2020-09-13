@@ -10,7 +10,6 @@ const { readCsv, listDir, getLangCode, isInJson } = require('./functions');
 const { loadLang } = require('./scrap');
 
 (async () => {
-    let languages = listDir(path.join(__dirname, `../languages/`))
 
     let answers;
     let data;
@@ -35,13 +34,15 @@ const { loadLang } = require('./scrap');
                     }
                 ])
                     .then((async answer => {
-                        await loadLang(answer.lang)
-                            .then(() => console.log(`${answer.lang} was added to your languages 🥳`))
+                        loadLang(answer.lang)
+                            .then(async () => console.log(`${answer.lang} was added to your languages 🥳`))
                             .catch(e => console.log(e))
                     }))
                     .catch(e => console.log(e))
             }
         }))
+
+    let languages = listDir(path.join(__dirname, `../languages/`))
 
     await inquirer.prompt([
         {
